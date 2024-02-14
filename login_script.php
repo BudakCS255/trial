@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT id, password, role FROM users WHERE username = ?");
+    $stmt = $conn->prepare("SELECT password, role, email FROM usersWithEmail WHERE username = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -28,12 +28,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $row = $result->fetch_assoc();
         
         // Verify the password 
-        if ($password === $row['password']) { 
-            $_SESSION['loggedin'] = true;
-            $_SESSION['username'] = $username;
-            $_SESSION['role'] = $row['role'];
-            header("Location: verify2fa.php"); // Redirect to 2FA verification page
-            exit();
+        if ($password === $row['password']) {
+            // Check if user has an associated email
+            if (!empty($row['email'])) {
+                // Include PHPMailer library
+                require 'vendor/autoload.php';
+
+                // Send verification code to the user's email using Google SMTP
+                $mail = new PHPMailer\PHPMailer\PHPMailer();
+                $mail->isSMTP();
+                $mail->Host = 'smtp.gmail.com'; // Gmail SMTP server
+                $mail->Port = 587; // TLS port
+                $mail->SMTPSecure = 'tls'; // Enable TLS encryption
+                $mail->SMTPAuth = true;
+                $mail->Username = 'hazieq2210@gmail.com'; // Your Gmail email address
+                $mail->Password = 'ykng qwly olhd rxls'; // Your Gmail App Password
+                $mail->setFrom('hazieq2210@gmail.com', 'Mohamad Afnan'); // Replace with your name and Gmail email
+                $mail->addAddress($row['email']);
+                $mail->Subject = 'Verification Code for Two-Factor Authentication';
+                $verificationCode = mt_rand(100000, 999999); // Generate a 6-digit code
+                $mail->Body = "Your verification code is: $verificationCode";
+
+                if ($mail->send()) {
+                    // Set verification code in session
+                    $_SESSION['verification_code'] = $verificationCode;
+                    $_SESSION['email'] = $row['email'];
+                    header("Location: verify2fa.php");
+                    exit();
+                } else {
+                    echo "Failed to send verification code. Please try again later.";
+                }
+            } else {
+                echo "No email associated with this account. 2FA is not available.";
+            }
         } else {
             echo "Invalid password!";
         }
