@@ -1,12 +1,13 @@
 <?php
-// Start the session and database configuration
-session_start();
+session_start(); // Start the session to access session variables.
+
+// Database configuration
 $dbHost = 'localhost';
 $dbUsername = 'afnan';
 $dbPassword = 'john_wick_77';
 $dbName = 'mywebsite_images';
 
-// Attempt to create a database connection
+// Create a database connection
 try {
     $pdo = new PDO("mysql:host=$dbHost;dbname=$dbName", $dbUsername, $dbPassword);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -15,28 +16,22 @@ try {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = $_POST['email'];
+    // Retrieve the user's email from the session
+    if (!isset($_SESSION['email'])) {
+        die("Session expired or invalid. Please login again.");
+    }
+    $email = $_SESSION['email'];
     $verificationCode = $_POST['verification_code'];
 
-    // Debug: Output the submitted information
-    echo "Submitted Email: " . htmlspecialchars($email) . "<br>";
-    echo "Submitted Verification Code: " . htmlspecialchars($verificationCode) . "<br>";
-
-    $query = "SELECT * FROM usersWithEmail WHERE email = :email";
+    // Prepare and execute the query to check the verification code
+    $query = "SELECT * FROM usersWithEmail WHERE email = :email AND token = :verificationCode";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':verificationCode', $verificationCode);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Debug: Output the stored token for comparison
     if ($user) {
-        echo "Stored Verification Code in Database: " . $user['token'] . "<br>";
-    } else {
-        echo "No user found with that email.<br>";
-    }
-
-    // Comparing the submitted verification code with the stored token
-    if ($user && $verificationCode == $user['token']) {
         // Verification successful, redirect to index.php
         header("Location: index.php");
         exit();
@@ -62,7 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         <label for="verification_code">Enter Verification Code:</label><br>
         <input type="text" id="verification_code" name="verification_code"><br><br>
-        <input type="hidden" name="email" value="<?php echo isset($_GET['email']) ? htmlspecialchars($_GET['email']) : ''; ?>">
         <input type="submit" value="Submit">
     </form>
 </body>
