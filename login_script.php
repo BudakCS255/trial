@@ -27,10 +27,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         
-        // Verify the password 
+        // Verify the password (consider using password_verify() here)
         if ($password === $row['password']) {
             // Check if user has an associated email
             if (!empty($row['email'])) {
+                // Generate a 6-digit verification code
+                $verificationCode = mt_rand(100000, 999999);
+
+                // Update the token in the database
+                $updateStmt = $conn->prepare("UPDATE usersWithEmail SET token = ? WHERE username = ?");
+                $updateStmt->bind_param("is", $verificationCode, $username);
+                $updateStmt->execute();
+                $updateStmt->close();
+
                 // Include PHPMailer library
                 require 'vendor/autoload.php';
 
@@ -46,7 +55,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $mail->setFrom('hazieq2210@gmail.com', 'Mohamad Afnan'); // Replace with your name and Gmail email
                 $mail->addAddress($row['email']);
                 $mail->Subject = 'Verification Code for Two-Factor Authentication';
-                $verificationCode = mt_rand(100000, 999999); // Generate a 6-digit code
                 $mail->Body = "Your verification code is: $verificationCode";
 
                 if ($mail->send()) {
