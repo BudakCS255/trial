@@ -1,28 +1,42 @@
 <?php
-// Database configuration
+// Start the session and database configuration
+session_start();
 $dbHost = 'localhost';
 $dbUsername = 'afnan';
 $dbPassword = 'john_wick_77';
 $dbName = 'mywebsite_images';
 
-// Create a database connection
-$pdo = new PDO("mysql:host=$dbHost;dbname=$dbName", $dbUsername, $dbPassword);
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+// Attempt to create a database connection
+try {
+    $pdo = new PDO("mysql:host=$dbHost;dbname=$dbName", $dbUsername, $dbPassword);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Could not connect to the database $dbName :" . $e->getMessage());
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Get the user's email and verification code from the form
     $email = $_POST['email'];
     $verificationCode = $_POST['verification_code'];
 
-    // Check if the verification code matches with the stored code for the user
-    $query = "SELECT * FROM usersWithEmail WHERE email = :email AND token = :code";
+    // Debug: Output the submitted information
+    echo "Submitted Email: " . htmlspecialchars($email) . "<br>";
+    echo "Submitted Verification Code: " . htmlspecialchars($verificationCode) . "<br>";
+
+    $query = "SELECT * FROM usersWithEmail WHERE email = :email";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':code', $verificationCode);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+    // Debug: Output the stored token for comparison
     if ($user) {
+        echo "Stored Verification Code in Database: " . $user['token'] . "<br>";
+    } else {
+        echo "No user found with that email.<br>";
+    }
+
+    // Comparing the submitted verification code with the stored token
+    if ($user && $verificationCode == $user['token']) {
         // Verification successful, redirect to index.php
         header("Location: index.php");
         exit();
