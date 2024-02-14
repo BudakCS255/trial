@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $updateStmt->close();
 
                 // Include PHPMailer library
-                require 'vendor/autoload.php';
+                require '/var/www/vendor/autoload.php';
 
                 // Send verification code to the user's email using Google SMTP
                 $mail = new PHPMailer\PHPMailer\PHPMailer();
