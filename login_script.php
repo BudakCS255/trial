@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['loggedin'] = true;
             $_SESSION['username'] = $username;
             $_SESSION['role'] = $row['role'];
-            header("Location: index.php"); // Redirect to your main page
+            header("Location: verify2fa.php"); // Redirect to 2FA verification page
             exit();
         } else {
             echo "Invalid password!";
