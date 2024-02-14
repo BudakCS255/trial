@@ -1,9 +1,9 @@
 <?php
 // Database configuration
 $dbHost = 'localhost';
-$dbUsername = 'root';
+$dbUsername = 'afnan';
 $dbPassword = 'john_wick_77';
-$dbName = '2fa_demo';
+$dbName = 'mywebsite_images';
 
 // Create a database connection
 $pdo = new PDO("mysql:host=$dbHost;dbname=$dbName", $dbUsername, $dbPassword);
@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $verificationCode = $_POST['verification_code'];
 
     // Check if the verification code matches with the stored code for the user
-    $query = "SELECT * FROM users WHERE email = :email AND verification_code = :code";
+    $query = "SELECT * FROM usersWithEmail WHERE email = :email AND token = :code";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':code', $verificationCode);
