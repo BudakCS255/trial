@@ -227,6 +227,7 @@ $conn->close();
                 <option value="Case001">Case001</option>
                 <option value="Case002">Case002</option>
                 <option value="Case003">Case003</option>
+                <option value="Case004">Case004</option>
             </select>
             <br>
             <input type="submit" value="Upload">
@@ -242,6 +243,7 @@ $conn->close();
                 <option value="Case001">Case001</option>
                 <option value="Case002">Case002</option>
                 <option value="Case003">Case003</option>
+                <option value="Case004">Case004</option>
             </select>
             <input type="submit" name="view_images" value="View Images">
             <a href="index.php?download=download&folder=<?php echo $selectedFolder; ?>" class="download-link">Download</a>
