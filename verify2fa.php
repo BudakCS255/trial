@@ -16,7 +16,6 @@ try {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Retrieve the user's email from the session
     if (!isset($_SESSION['email'])) {
         die("Session expired or invalid. Please login again.");
     }
@@ -32,7 +31,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($user) {
-        // Verification successful, redirect to index.php
+        // Verification successful
+        $_SESSION['loggedin'] = true;
+        $_SESSION['role'] = $user['role']; // Set logged in status and role
+        
+        // Redirect to index.php
         header("Location: index.php");
         exit();
     } else {
