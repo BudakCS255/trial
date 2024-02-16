@@ -220,44 +220,33 @@ $conn->close();
             margin: 0;
             padding: 20px;
         }
-        
+
         h1 {
             text-align: center;
             color: #003366; /* Dark blue */
         }
-        
+
         form {
             text-align: center;
             margin-bottom: 20px;
         }
-        
+
         select {
             margin-bottom: 10px;
         }
-        
+
         input[type="file"] {
             margin-bottom: 10px;
         }
-        
-        .image-collage {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px; /* Adjust the gap between images as needed */
-        }
-        
+
         .image-item {
-            width: 200px; /* Adjust the width of each image item as needed */
-            margin-bottom: 20px; /* Adjust the margin around each image item as needed */
-            overflow: hidden;
-            border-radius: 5px; /* Optional: Add border radius for rounded corners */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for each image item */
+            text-align: center;
+            margin-bottom: 20px;
         }
-        
+
         .image-item img {
-            width: 100%;
+            max-width: 100%;
             height: auto;
-            display: block;
         }
 
         #upload-feedback {
