@@ -21,6 +21,7 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            position: relative; /* Added */
         }
 
         h1 {
@@ -45,11 +46,12 @@
         }
 
         .password-toggle {
-            position: relative;
-            display: inline-block;
+            position: absolute; /* Changed */
+            top: 50%; /* Changed */
+            right: 5px; /* Changed */
+            transform: translateY(-50%); /* Changed */
             width: 40px;
             height: 40px;
-            margin-left: -40px;
             background-color: #ccc;
             border: none;
             border-radius: 5px;
