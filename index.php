@@ -325,11 +325,11 @@ $conn->close();
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
+            // Initialize counter for each folder
+            $counter = 1;
+
             // Output the images
             while ($row = $result->fetch_assoc()) {
-                // Initialize counter for each folder
-                $counter = 1;
-                
                 $imageId = $row["id"];
                 $encryptedImageData = $row["images"];
 
@@ -342,7 +342,7 @@ $conn->close();
                 echo "<h2>Image $counter</h2>";
                 echo "<img src='data:image/jpeg;base64,$base64Image' alt='Image $counter'>";
                 echo "</div>";
-                
+
                 // Increment the counter for each image
                 $counter++;
             }
