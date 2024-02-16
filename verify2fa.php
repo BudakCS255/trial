@@ -63,15 +63,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             height: 100vh;
         }
 
-        h2 {
-            text-align: center;
-            color: #003366; /* Dark blue */
-            margin-bottom: 20px; /* Increased margin */
+        form {
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2); /* Increased shadow */
+            border: 2px solid #003366; /* Dark blue border */
         }
 
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
             color: #555;
         }
 
@@ -107,12 +111,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
-    <h2>Court Evidence System - Two-Factor Authentication Verification</h2>
-    <?php if (isset($verificationError)) { ?>
-        <p class="error"><?php echo $verificationError; ?></p>
-    <?php } ?>
     <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <label for="verification_code">Enter Verification Code:</label><br>
+        <?php if (isset($verificationError)) { ?>
+            <p class="error"><?php echo $verificationError; ?></p>
+        <?php } ?>
+        <label for="verification_code">Enter Verification Code:</label>
         <input type="text" id="verification_code" name="verification_code" required><br><br>
         <input type="submit" value="Submit">
     </form>
