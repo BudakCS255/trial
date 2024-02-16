@@ -42,6 +42,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             box-sizing: border-box;
+            display: inline-block;
         }
 
         .password-toggle {
@@ -52,6 +53,7 @@
             background: none;
             cursor: pointer;
             vertical-align: middle;
+            margin-left: -36px;
         }
 
         input[type="submit"] {
