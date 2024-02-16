@@ -21,7 +21,6 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            position: relative; /* Added */
         }
 
         h1 {
@@ -37,7 +36,7 @@
 
         input[type="text"],
         input[type="password"] {
-            width: calc(100% - 40px);
+            width: calc(100% - 32px);
             padding: 10px;
             margin-bottom: 10px;
             border: 1px solid #ccc;
@@ -46,31 +45,13 @@
         }
 
         .password-toggle {
-            position: absolute; /* Changed */
-            top: 50%; /* Changed */
-            right: 5px; /* Changed */
-            transform: translateY(-50%); /* Changed */
-            width: 40px;
-            height: 40px;
-            background-color: #ccc;
+            display: inline-block;
+            width: 32px;
+            height: 32px;
             border: none;
-            border-radius: 5px;
+            background: none;
             cursor: pointer;
-        }
-
-        .password-toggle::before {
-            content: "\f06e";
-            font-family: "Font Awesome 5 Free";
-            font-weight: 900;
-            color: #333;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .password-toggle.active::before {
-            content: "\f070";
+            vertical-align: middle;
         }
 
         input[type="submit"] {
@@ -97,7 +78,7 @@
             <input type="text" name="username" id="username" required>
             <label for="password">Password:</label>
             <input type="password" name="password" id="password" required>
-            <button type="button" class="password-toggle" onclick="togglePassword()"></button>
+            <button type="button" class="password-toggle" onclick="togglePassword()">👁️</button>
             <input type="submit" value="Login">
         </form>
     </div>
@@ -105,13 +86,10 @@
     <script>
         function togglePassword() {
             var passwordField = document.getElementById("password");
-            var toggleButton = document.querySelector(".password-toggle");
             if (passwordField.type === "password") {
                 passwordField.type = "text";
-                toggleButton.classList.add("active");
             } else {
                 passwordField.type = "password";
-                toggleButton.classList.remove("active");
             }
         }
     </script>
