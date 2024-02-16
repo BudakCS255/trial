@@ -50,16 +50,70 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2FA Verification</title>
+    <title>Two-Factor Authentication Verification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5; /* Light gray */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h2 {
+            text-align: center;
+            color: #003366; /* Dark blue */
+            margin-bottom: 20px; /* Increased margin */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #003366; /* Dark blue */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #001f4d; /* Darker blue on hover */
+        }
+
+        p.error {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Two-Factor Authentication Verification</h2>
+    <h2>Court Evidence System - Two-Factor Authentication Verification</h2>
     <?php if (isset($verificationError)) { ?>
-        <p style="color: red;"><?php echo $verificationError; ?></p>
+        <p class="error"><?php echo $verificationError; ?></p>
     <?php } ?>
     <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         <label for="verification_code">Enter Verification Code:</label><br>
-        <input type="text" id="verification_code" name="verification_code"><br><br>
+        <input type="text" id="verification_code" name="verification_code" required><br><br>
         <input type="submit" value="Submit">
     </form>
 </body>
