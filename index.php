@@ -319,23 +319,37 @@ $conn->close();
     <!-- Image display section -->
     <?php if ($_SERVER["REQUEST_METHOD"] == "GET" && (isset($_GET['view_images']) || isset($_GET['download'])) && ($_SESSION['role'] === 'B' || $_SESSION['role'] === 'C')): ?>
         <?php
-        // Initialize counter
-        $counter = 1;
-        ?>
-        <div class="image-display">
-            <?php while ($row = $result->fetch_assoc()): ?>
-                <?php
-                // Process each image
+        // Query to retrieve encrypted image data from the selected folder table
+        $selectedFolder = sanitize_folder($_GET['folder']);
+        $sql = "SELECT id, images FROM $selectedFolder";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            // Output the images
+            while ($row = $result->fetch_assoc()) {
+                // Initialize counter for each folder
+                $counter = 1;
+                
+                $imageId = $row["id"];
                 $encryptedImageData = $row["images"];
+
+                // Decrypt the image data
                 $decryptedImageData = xor_encrypt_decrypt($encryptedImageData, $encryptionKey);
+
+                // Convert to base64 for displaying as an image
                 $base64Image = base64_encode($decryptedImageData);
-                ?>
-                <div class="image-item">
-                    <h2>Image <?php echo $counter++; ?></h2>
-                    <img src='data:image/jpeg;base64,<?php echo $base64Image; ?>' alt='Image <?php echo $counter - 1; ?>'>
-                </div>
-            <?php endwhile; ?>
-        </div>
+                echo "<div class='image-item'>";
+                echo "<h2>Image $counter</h2>";
+                echo "<img src='data:image/jpeg;base64,$base64Image' alt='Image $counter'>";
+                echo "</div>";
+                
+                // Increment the counter for each image
+                $counter++;
+            }
+        } else {
+            echo "No images found in $selectedFolder.";
+        }
+        ?>
     <?php endif; ?>
 
     <!-- Logout Form -->
