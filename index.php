@@ -316,6 +316,28 @@ $conn->close();
         ?>
     </div>
 
+    <!-- Image display section -->
+    <?php if ($_SERVER["REQUEST_METHOD"] == "GET" && (isset($_GET['view_images']) || isset($_GET['download'])) && ($_SESSION['role'] === 'B' || $_SESSION['role'] === 'C')): ?>
+        <?php
+        // Initialize counter
+        $counter = 1;
+        ?>
+        <div class="image-display">
+            <?php while ($row = $result->fetch_assoc()): ?>
+                <?php
+                // Process each image
+                $encryptedImageData = $row["images"];
+                $decryptedImageData = xor_encrypt_decrypt($encryptedImageData, $encryptionKey);
+                $base64Image = base64_encode($decryptedImageData);
+                ?>
+                <div class="image-item">
+                    <h2>Image <?php echo $counter++; ?></h2>
+                    <img src='data:image/jpeg;base64,<?php echo $base64Image; ?>' alt='Image <?php echo $counter - 1; ?>'>
+                </div>
+            <?php endwhile; ?>
+        </div>
+    <?php endif; ?>
+
     <!-- Logout Form -->
     <form class="logout-form" method="post">
         <input type="hidden" name="action" value="logout">
