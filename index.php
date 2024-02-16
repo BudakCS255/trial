@@ -239,14 +239,24 @@ $conn->close();
             margin-bottom: 10px;
         }
 
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
         .image-item {
             text-align: center;
-            margin-bottom: 20px;
+            margin: 10px;
+            width: 200px;
         }
 
         .image-item img {
             max-width: 100%;
             height: auto;
+            max-height: 200px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
         }
 
         #upload-feedback {
