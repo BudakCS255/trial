@@ -213,57 +213,153 @@ $conn->close();
 <html>
 <head>
     <title>Image Upload and Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #003366;
+            margin-bottom: 20px;
+        }
+
+        form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        select,
+        input[type="submit"] {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        input[type="file"] {
+            width: auto;
+            margin-bottom: 10px;
+        }
+
+        .download-link {
+            display: block;
+            margin-top: 10px;
+            text-align: center;
+            color: #003366;
+            text-decoration: none;
+        }
+
+        .download-link:hover {
+            text-decoration: underline;
+        }
+
+        #upload-feedback {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        p.message {
+            color: #003366;
+        }
+
+        form.logout-form {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        form.logout-form input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #003366;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        form.logout-form input[type="submit"]:hover {
+            background-color: #001f4d;
+        }
+    </style>
 </head>
 <body>
-    <?php if ($_SESSION['role'] === 'A' || $_SESSION['role'] === 'C'): ?>
-        <!-- HTML form for image upload -->
-        <h1>Upload Images</h1>
-        <form action="index.php" method="POST" enctype="multipart/form-data">
-            <label for="image">Choose image(s) to upload:</label>
-            <input type="file" name="image[]" id="image" accept="image/*" multiple>
-            <br>
-            <label for="folder">Select a folder:</label>
-            <select name="folder" id="folder">
-                <option value="Case001">Case001</option>
-                <option value="Case002">Case002</option>
-                <option value="Case003">Case003</option>
-                <option value="Case004">Case004</option>
-            </select>
-            <br>
-            <input type="submit" value="Upload">
+    <div class="container">
+        <?php if ($_SESSION['role'] === 'A' || $_SESSION['role'] === 'C'): ?>
+            <!-- HTML form for image upload -->
+            <h1>Upload Images</h1>
+            <form action="index.php" method="POST" enctype="multipart/form-data">
+                <label for="image">Choose image(s) to upload:</label>
+                <input type="file" name="image[]" id="image" accept="image/*" multiple>
+                <br>
+                <label for="folder">Select a folder:</label>
+                <select name="folder" id="folder">
+                    <option value="Case001">Case001</option>
+                    <option value="Case002">Case002</option>
+                    <option value="Case003">Case003</option>
+                    <option value="Case004">Case004</option>
+                </select>
+                <br>
+                <input type="submit" value="Upload">
+            </form>
+        <?php endif; ?>
+
+        <?php if ($_SESSION['role'] === 'B' || $_SESSION['role'] === 'C'): ?>
+            <!-- HTML form for image viewing -->
+            <h1>View Images</h1>
+            <form action="index.php" method="GET">
+                <label for="view_folder">Select a folder to view images:</label>
+                <select name="folder" id="view_folder">
+                    <option value="Case001">Case001</option>
+                    <option value="Case002">Case002</option>
+                    <option value="Case003">Case003</option>
+                    <option value="Case004">Case004</option>
+                </select>
+                <br>
+                <input type="submit" name="view_images" value="View Images">
+                <a href="index.php?download=download&folder=<?php echo $selectedFolder; ?>" class="download-link">Download</a>
+            </form>
+        <?php endif; ?>
+
+        <!-- Feedback area for displaying messages -->
+        <div id="upload-feedback">
+            <?php
+            if (isset($_GET['message'])) {
+                echo '<p class="message">' . htmlspecialchars($_GET['message']) . '</p>';
+            }
+            ?>
+        </div>
+
+        <!-- Logout Form -->
+        <form class="logout-form" method="post">
+            <input type="hidden" name="action" value="logout">
+            <input type="submit" value="Logout">
         </form>
-    <?php endif; ?>
-
-    <?php if ($_SESSION['role'] === 'B' || $_SESSION['role'] === 'C'): ?>
-        <!-- HTML form for image viewing -->
-        <h1>View Images</h1>
-        <form action="index.php" method="GET">
-            <label for="view_folder">Select a folder to view images:</label>
-            <select name="folder" id="view_folder">
-                <option value="Case001">Case001</option>
-                <option value="Case002">Case002</option>
-                <option value="Case003">Case003</option>
-                <option value="Case004">Case004</option>
-            </select>
-            <input type="submit" name="view_images" value="View Images">
-            <a href="index.php?download=download&folder=<?php echo $selectedFolder; ?>" class="download-link">Download</a>
-        </form>
-    <?php endif; ?>
-
-    <!-- Feedback area for displaying messages -->
-    <div id="upload-feedback">
-        <?php
-        if (isset($_GET['message'])) {
-            echo '<p>' . htmlspecialchars($_GET['message']) . '</p>';
-        }
-        ?>
-
-            <!-- Logout Form -->
-<form method="post">
-    <input type="hidden" name="action" value="logout">
-    <input type="submit" value="Logout">
-</form>
-        
     </div>
 </body>
 </html>
