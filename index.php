@@ -239,27 +239,14 @@ $conn->close();
             margin-bottom: 10px;
         }
 
-        .image-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-start; /* Align items to the start of the flex container */
-        }
-
         .image-item {
             text-align: center;
-            margin: 10px;
-            /* Adjust the width to fit more images in a row */
-            width: 200px;
-            flex: 1 1 auto; /* Allow items to grow and shrink to fill space */
-            max-width: 200px; /* Maximum width of each image */
+            margin-bottom: 20px;
         }
 
         .image-item img {
             max-width: 100%;
             height: auto;
-            max-height: 200px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
         }
 
         #upload-feedback {
