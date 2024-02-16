@@ -178,7 +178,6 @@ if (isset($_FILES["image"])) {
 
 // Check if the server request method is GET and view_images or download is set
 if ($_SERVER["REQUEST_METHOD"] == "GET" && (isset($_GET['view_images']) || isset($_GET['download'])) && ($_SESSION['role'] === 'B' || $_SESSION['role'] === 'C')) {
-    // Your existing code for viewing and downloading images goes here...
     // Query to retrieve encrypted image data from the selected folder table
     $selectedFolder = sanitize_folder($_GET['folder']);
     $sql = "SELECT id, images FROM $selectedFolder";
@@ -186,8 +185,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && (isset($_GET['view_images']) || isset
 
 if ($result->num_rows > 0) {
     // Output the images
+    $imageNumber = 1; // Initialize image number
     while ($row = $result->fetch_assoc()) {
-        $imageId = $row["id"];
         $encryptedImageData = $row["images"];
 
         // Decrypt the image data
@@ -196,9 +195,10 @@ if ($result->num_rows > 0) {
         // Convert to base64 for displaying as an image
         $base64Image = base64_encode($decryptedImageData);
         echo "<div class='image-item'>";
-        echo "<h2>Image $imageId</h2>";
-        echo "<img src='data:image/jpeg;base64,$base64Image' alt='Image $imageId'>";
+        echo "<h2>Image $imageNumber</h2>";
+        echo "<img src='data:image/jpeg;base64,$base64Image' alt='Image $imageNumber'>";
         echo "</div>";
+        $imageNumber++; // Increment image number
     }
 } else {
     echo "No images found in $selectedFolder.";
