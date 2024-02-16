@@ -36,12 +36,39 @@
 
         input[type="text"],
         input[type="password"] {
-            width: 100%;
+            width: calc(100% - 40px);
             padding: 10px;
             margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
             box-sizing: border-box;
+        }
+
+        .password-toggle {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            margin-left: -40px;
+            background-color: #ccc;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .password-toggle::before {
+            content: "\f06e";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            color: #333;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .password-toggle.active::before {
+            content: "\f070";
         }
 
         input[type="submit"] {
@@ -68,8 +95,23 @@
             <input type="text" name="username" id="username" required>
             <label for="password">Password:</label>
             <input type="password" name="password" id="password" required>
+            <button type="button" class="password-toggle" onclick="togglePassword()"></button>
             <input type="submit" value="Login">
         </form>
     </div>
+
+    <script>
+        function togglePassword() {
+            var passwordField = document.getElementById("password");
+            var toggleButton = document.querySelector(".password-toggle");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                toggleButton.classList.add("active");
+            } else {
+                passwordField.type = "password";
+                toggleButton.classList.remove("active");
+            }
+        }
+    </script>
 </body>
 </html>
