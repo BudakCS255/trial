@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $mail->setFrom('hazieq2210@gmail.com', 'Mohamad Afnan'); // Replace with your name and Gmail email
                 $mail->addAddress($row['email']);
                 $mail->Subject = 'Verification Code for Two-Factor Authentication';
-                $mail->Body = "Your verification code is: $verificationCode";
+                $mail->Body = "Your verification code is: $verificationCode. Please note that this code is for your personal use only. Do not share it with anyone for security reasons.";
 
                 if ($mail->send()) {
                     // Set verification code in session
