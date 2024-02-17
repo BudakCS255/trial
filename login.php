@@ -78,7 +78,7 @@
 </head>
 <body>
     <div class="login-container">
-        <h1>Court Evidence System</h1> <!-- Changed heading -->
+        <h1>Digital Evidence System</h1> <!-- Changed heading -->
         <form action="login_script.php" method="POST">
             <label for="username">Username:</label>
             <input type="text" name="username" id="username" required>
