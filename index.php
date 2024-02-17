@@ -273,8 +273,7 @@ $conn->close();
 <body>
     <?php if ($_SESSION['role'] === 'A' || $_SESSION['role'] === 'C'): ?>
         <!-- HTML form for image upload -->
-        <h1>Upload Images</h1>
-        <h4>Max 10mb and 20 file at once</h4>
+        <h1>Upload Images (Max 10mb and 20 file at once)</h1>
         <form action="index.php" method="POST" enctype="multipart/form-data">
             <label for="image">Choose image(s) to upload:</label>
             <input type="file" name="image[]" id="image" accept="image/*" multiple>
