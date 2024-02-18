@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $mail->SMTPSecure = 'tls'; // Enable TLS encryption
                 $mail->SMTPAuth = true;
                 $mail->Username = 'hazieq2210@gmail.com'; // Your Gmail email address
-                $mail->Password = 'ykng qwly olhd rxls'; // Your Gmail App Password
+                $mail->Password = 'ykng qwly olhd wxls'; // Your Gmail App Password
                 $mail->setFrom('hazieq2210@gmail.com', 'Mohamad Afnan'); // Replace with your name and Gmail email
                 $mail->addAddress($row['email']);
                 $mail->Subject = 'Verification Code for Two-Factor Authentication';
